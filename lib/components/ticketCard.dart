@@ -1,4 +1,5 @@
 import 'package:concert_tickets/model/concert.dart';
+import 'package:concert_tickets/model/functions.dart';
 import 'package:concert_tickets/pages/details.dart';
 import 'package:flutter/material.dart';
 
@@ -47,7 +48,7 @@ class _TicketCardState extends State<TicketCard> {
                           fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      widget.concert.date.toLocal().toString(),
+                      convertDateToString(widget.concert.date),
                       style: const TextStyle(fontSize: 16),
                     ),
                     Text(

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:concert_tickets/model/concertRepo.dart';
+import 'package:concert_tickets/model/functions.dart';
 import 'package:flutter/material.dart';
 
 import '../model/concert.dart';
@@ -105,7 +106,9 @@ class _AddState extends State<Add> {
                       },
                       child: TextField(
                         controller: TextEditingController(
-                            text: _date == null ? '' : _date.toString()),
+                            text: _date == null
+                                ? ''
+                                : convertDateToString(_date!)),
                         enabled: false,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
