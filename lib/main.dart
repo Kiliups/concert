@@ -55,17 +55,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   imageUrl:
                       'https://i.scdn.co/image/ab6761610000e5eb1e134894b5dcefed7b7af230'),
               TicketCard(
-                  title: 'Lena&Linus',
-                  date: '18.03.2024, 20:00 Uhr',
-                  location: 'Lindwurmstraße 88, 80337 München',
+                  title: 'TRÄNEN',
+                  date: '22.02.2024, 20:00 Uhr',
+                  location: 'Feierwerk, München',
                   imageUrl:
-                      'https://i.scdn.co/image/ab6761610000e5eba5cf52c20d4ff836de483a28'),
+                      'https://i.scdn.co/image/ab67616d00001e02c38cfcb797240fcf329b71e2'),
               TicketCard(
-                  title: 'Lena&Linus',
-                  date: '18.03.2024, 20:00 Uhr',
-                  location: 'Lindwurmstraße 88, 80337 München',
+                  title: 'PaulWetz',
+                  date: '20.01.2024, 20:00 Uhr',
+                  location: 'Ampere, München',
                   imageUrl:
-                      'https://i.scdn.co/image/ab6761610000e5eba5cf52c20d4ff836de483a28'),
+                      'https://i.scdn.co/image/ab6761610000e5eb8c74abacbaf998d692013aa5'),
             ],
           ),
         ),
