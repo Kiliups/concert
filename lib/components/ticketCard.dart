@@ -1,19 +1,11 @@
+import 'package:concert_tickets/model/concert.dart';
 import 'package:concert_tickets/pages/details.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TicketCard extends StatefulWidget {
-  const TicketCard(
-      {super.key,
-      required this.title,
-      required this.date,
-      required this.location,
-      required this.imageUrl});
+  const TicketCard({super.key, required this.concert});
 
-  final String title;
-  final String date;
-  final String location;
-  final String imageUrl;
+  final Concert concert;
 
   @override
   State<TicketCard> createState() => _TicketCardState();
@@ -26,7 +18,8 @@ class _TicketCardState extends State<TicketCard> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Details(title: widget.title)),
+          MaterialPageRoute(
+              builder: (context) => Details(title: widget.concert.name)),
         );
       },
       child: Card(
@@ -41,7 +34,7 @@ class _TicketCardState extends State<TicketCard> {
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Image.network(
-                    widget.imageUrl,
+                    widget.concert.imageUrl,
                   ),
                 ),
                 Column(
@@ -49,20 +42,20 @@ class _TicketCardState extends State<TicketCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.title,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      widget.concert.name,
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      widget.date, //'18.03.2024, 20:00 Uhr',
-                      style: TextStyle(fontSize: 16),
+                      widget.concert.date.toLocal().toString(),
+                      style: const TextStyle(fontSize: 16),
                     ),
                     Text(
-                      widget.location, //'Lindwurmstraße 88, 80337 München',
+                      widget.concert.location.toString(),
                       overflow: TextOverflow.clip,
                       maxLines: 3,
-                      style:
-                          TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w300, fontSize: 14),
                     )
                   ],
                 ),

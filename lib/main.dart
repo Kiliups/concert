@@ -1,8 +1,13 @@
-import 'package:concert_tickets/components/ticketCard.dart';
 import 'package:concert_tickets/pages/add.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+import 'components/ticketList.dart';
+import 'firebase_options.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -39,33 +44,10 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(widget.title),
         ),
         body: Container(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+          padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
           child: ListView(
             children: const [
-              TicketCard(
-                  title: 'Lena&Linus',
-                  date: '18.03.2024, 20:00 Uhr',
-                  location: 'Lindwurmstraße 88, 80337 München',
-                  imageUrl:
-                      'https://i.scdn.co/image/ab6761610000e5eba5cf52c20d4ff836de483a28'),
-              TicketCard(
-                  title: 'Kaffkiez',
-                  date: '16.03.2024, 20:00 Uhr',
-                  location: 'Ostbahnhof, 80337 München',
-                  imageUrl:
-                      'https://i.scdn.co/image/ab6761610000e5eb1e134894b5dcefed7b7af230'),
-              TicketCard(
-                  title: 'TRÄNEN',
-                  date: '22.02.2024, 20:00 Uhr',
-                  location: 'Feierwerk, München',
-                  imageUrl:
-                      'https://i.scdn.co/image/ab67616d00001e02c38cfcb797240fcf329b71e2'),
-              TicketCard(
-                  title: 'PaulWetz',
-                  date: '20.01.2024, 20:00 Uhr',
-                  location: 'Ampere, München',
-                  imageUrl:
-                      'https://i.scdn.co/image/ab6761610000e5eb8c74abacbaf998d692013aa5'),
+              TicketList(),
             ],
           ),
         ),
