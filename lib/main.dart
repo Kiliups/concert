@@ -1,4 +1,5 @@
 import 'package:concert_tickets/pages/add.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,8 @@ import 'firebase_options.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  var auth = FirebaseAuth.instance;
+  await auth.signInAnonymously();
   runApp(const MyApp());
 }
 
@@ -44,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(widget.title),
         ),
         body: Container(
-          padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+          padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
           child: ListView(
             children: const [
               TicketList(),

@@ -24,10 +24,7 @@ class TicketList extends StatelessWidget {
             }
 
             if (snapshot.data!.docs.isEmpty) {
-              return const SizedBox(
-                child:
-                    Center(child: Text("You haven't booked any appointment!")),
-              );
+              return const Center(child: Text("You haven't added any Tickts yet!"));
             }
 
             if (snapshot.hasData) {
@@ -36,6 +33,7 @@ class TicketList extends StatelessWidget {
               for (var doc in snapshot.data!.docs) {
                 final concert =
                     Concert.fromJson(doc.data() as Map<String, dynamic>);
+                concert.id = doc.id;
 
                 concerts.add(concert);
               }

@@ -38,6 +38,10 @@ dependencies:
   firebase_core: ^2.24.2
   cloud_firestore: ^4.14.0
   intl:
+  firebase_auth:
+  firebase_storage:
+  file_picker:
+  open_file:
 
 dev_dependencies:
   flutter_test:

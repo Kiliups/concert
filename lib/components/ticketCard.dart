@@ -1,4 +1,5 @@
 import 'package:concert_tickets/model/concert.dart';
+import 'package:concert_tickets/model/concertRepo.dart';
 import 'package:concert_tickets/model/functions.dart';
 import 'package:concert_tickets/pages/details.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class _TicketCardState extends State<TicketCard> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => Details(title: widget.concert.name)),
+              builder: (context) => Details(concert: widget.concert)),
         );
       },
       child: Card(
@@ -31,35 +32,77 @@ class _TicketCardState extends State<TicketCard> {
               children: [
                 Container(
                   margin: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Image.network(
-                    widget.concert.imageUrl,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      widget.concert.imageUrl,
+                    ),
                   ),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.concert.name,
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      convertDateToString(widget.concert.date),
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    Text(
-                      widget.concert.location.toString(),
-                      overflow: TextOverflow.clip,
-                      maxLines: 3,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w300, fontSize: 14),
-                    )
-                  ],
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.concert.name,
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        convertDateToString(widget.concert.date),
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                      Text(
+                        widget.concert.location.toString(),
+                        overflow: TextOverflow.clip,
+                        maxLines: 2,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w300, fontSize: 12),
+                      )
+                    ],
+                  ),
                 ),
+                IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Delete Ticket'),
+                            content: const Text(
+                                'Are you sure you want to delete this ticket?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  String? id = widget.concert.id;
+                                  id != null
+                                      ? ConcertRepo.deleteConcert(id)
+                                      : ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                          const SnackBar(
+                                            content:
+                                                Text('Please fill all fields'),
+                                            behavior: SnackBarBehavior.floating,
+                                            duration: Duration(seconds: 1),
+                                          ),
+                                        );
+                                },
+                                child: const Text('Delete'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    icon: const Icon(Icons.delete_outline))
               ],
             ),
           ),
