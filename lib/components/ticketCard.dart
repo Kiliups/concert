@@ -34,9 +34,10 @@ class _TicketCardState extends State<TicketCard> {
                   margin: const EdgeInsets.all(8),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      widget.concert.imageUrl,
-                    ),
+                    child: widget.concert.imageUrl != null
+                        ? Image.network(widget.concert.imageUrl!,
+                            fit: BoxFit.cover, width: 100, height: 100)
+                        : const SizedBox(),
                   ),
                 ),
                 Expanded(

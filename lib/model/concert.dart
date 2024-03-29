@@ -6,7 +6,7 @@ class Concert {
   DateTime date;
   String location;
   String ticketRef;
-  String imageUrl;
+  String? imageUrl;
   String? userId;
 
   Concert(this.name, this.date, this.location,this.ticketRef, this.imageUrl, this.userId);

@@ -17,8 +17,10 @@ class _AddState extends State<Add> {
   DateTime? _date;
   String _location = '';
   File? _ticket;
+  String? _imageUrl;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _imageUrlController = TextEditingController();
 
   @override
   void dispose() {
@@ -29,189 +31,255 @@ class _AddState extends State<Add> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Container(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Icon(
-                      Icons.add_card,
-                      size: 56,
-                    ),
-                    Container(
-                        margin: const EdgeInsets.only(top: 8),
-                        child: const Text(
-                          'Add a Concert Ticket',
-                          style: TextStyle(fontSize: 24),
-                        )),
-                    Container(
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 300,
+            flexibleSpace: FlexibleSpaceBar(
+              titlePadding: const EdgeInsets.all(8),
+              centerTitle: true,
+              title: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(
+                    Icons.add_card,
+                    size: 56,
+                  ),
+                  Container(
                       margin: const EdgeInsets.only(top: 8),
-                      child: TextField(
-                        controller: _nameController,
-                        onChanged: (String value) {
-                          setState(() {
-                            _name = value;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          hintText: 'Concert Name',
+                      child: const Text(
+                        'Add a Concert Ticket',
+                        style: TextStyle(fontSize: 24),
+                      )),
+                ],
+              ),
+              background: _imageUrl != null
+                  ? Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Image.network(
+                          _imageUrl!,
+                          fit: BoxFit.cover,
                         ),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 8),
-                      child: GestureDetector(
-                          onTap: () async {
-                            final DateTime? date = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime.now(),
-                                lastDate: DateTime.now()
-                                    .add(const Duration(days: 365)));
-                            if (date != null) {
-                              final TimeOfDay? time = await showTimePicker(
-                                  context: context,
-                                  initialTime: TimeOfDay.now());
-                              if (time != null) {
-                                final DateTime dateTime = DateTime(
-                                    date.year,
-                                    date.month,
-                                    date.day,
-                                    time.hour,
-                                    time.minute);
-                                setState(() {
-                                  _date = dateTime;
-                                });
-                              }
-                            }
-                          },
-                          child: TextField(
-                            controller: TextEditingController(
-                                text: _date == null
-                                    ? ''
-                                    : convertDateToString(_date!)),
-                            enabled: false,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              hintText: 'Date',
+                        Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: [
+                                Theme.of(context)
+                                    .colorScheme
+                                    .background
+                                    .withOpacity(1),
+                                Theme.of(context)
+                                    .colorScheme
+                                    .background
+                                    .withOpacity(0.1)
+                              ],
                             ),
-                          )),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 8),
-                      child: TextField(
-                        controller: _locationController,
-                        onChanged: (String value) {
-                          setState(() {
-                            _location = value;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
                           ),
-                          hintText: 'Location',
+                        ),
+                      ],
+                    )
+                  : const SizedBox(),
+            ),
+          ),
+          SliverFillRemaining(
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(top: 8),
+                        child: TextField(
+                          controller: _nameController,
+                          onChanged: (String value) {
+                            setState(() {
+                              _name = value;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            hintText: 'Concert Name',
+                          ),
                         ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        FilePickerResult? result =
-                            await FilePicker.platform.pickFiles();
-                        if (result != null) {
-                          setState(() {
-                            _ticket = File(result.files.single.path!);
-                          });
-                        }
-                      },
-                      child: Container(
+                      Container(
                         margin: const EdgeInsets.only(top: 8),
-                        height: 140,
-                        width: MediaQuery.of(context).size.width,
-                        child: DecoratedBox(
-                            decoration: const BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(4))),
-                            child: Center(
-                              child: _ticket == null
-                                  ? const Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.upload),
-                                        Text('Add Ticket'),
-                                      ],
-                                    )
-                                  : Text(_ticket!.path.split('/').last,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      style: const TextStyle(fontSize: 16)),
+                        child: GestureDetector(
+                            onTap: () async {
+                              final DateTime? date = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime.now(),
+                                  lastDate: DateTime.now()
+                                      .add(const Duration(days: 365)));
+                              if (date != null) {
+                                final TimeOfDay? time = await showTimePicker(
+                                    context: context,
+                                    initialTime: TimeOfDay.now());
+                                if (time != null) {
+                                  final DateTime dateTime = DateTime(
+                                      date.year,
+                                      date.month,
+                                      date.day,
+                                      time.hour,
+                                      time.minute);
+                                  setState(() {
+                                    _date = dateTime;
+                                  });
+                                }
+                              }
+                            },
+                            child: TextField(
+                              controller: TextEditingController(
+                                  text: _date == null
+                                      ? ''
+                                      : convertDateToString(_date!)),
+                              enabled: false,
+                              decoration: InputDecoration(
+                                hintStyle: const TextStyle(color: Colors.grey),
+                                // Text color
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                hintText: 'Date',
+                              ),
                             )),
                       ),
-                    ),
-                  ],
-                ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 8),
+                        child: TextField(
+                          controller: _locationController,
+                          onChanged: (String value) {
+                            setState(() {
+                              _location = value;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            hintText: 'Location',
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 8),
+                        child: TextField(
+                          controller: _imageUrlController,
+                          onChanged: (String value) {
+                            setState(() {
+                              _imageUrl = value;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            hintText: 'Image URL',
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          FilePickerResult? result =
+                              await FilePicker.platform.pickFiles();
+                          if (result != null) {
+                            setState(() {
+                              _ticket = File(result.files.single.path!);
+                            });
+                          }
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 8),
+                          height: 140,
+                          width: MediaQuery.of(context).size.width,
+                          child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .secondaryContainer
+                                      .withOpacity(0.5),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(4))),
+                              child: Center(
+                                child: _ticket == null
+                                    ? const Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.upload),
+                                          Text('Add Ticket'),
+                                        ],
+                                      )
+                                    : Text(_ticket!.path.split('/').last,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        style: const TextStyle(fontSize: 16)),
+                              )),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Cancel'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          if (_name.isNotEmpty &&
+                              _location.isNotEmpty &&
+                              _date != null &&
+                              _ticket != null) {
+                            ConcertRepo.addConcert(_name, _date!, _location,
+                                    _ticket!, _imageUrl)
+                                .then((value) => {
+                                      //added concert
+                                      Navigator.pop(context)
+                                    })
+                                .catchError((error) => {
+                                      //error
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text("An error occurred"),
+                                          behavior: SnackBarBehavior.floating,
+                                          duration: Duration(seconds: 1),
+                                        ),
+                                      )
+                                    });
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Please fill all fields'),
+                                behavior: SnackBarBehavior.floating,
+                                duration: Duration(seconds: 1),
+                              ),
+                            );
+                          }
+                        },
+                        child: const Text('Save'),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Cancel'),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    if (_name.isNotEmpty &&
-                        _location.isNotEmpty &&
-                        _date != null &&
-                        _ticket != null) {
-                      ConcertRepo.addConcert(_name, _date!, _location, _ticket!,
-                              "https://i.scdn.co/image/ab67616d00001e0254f676973b350db47b339925")
-                          .then((value) => {
-                                //added concert
-                                Navigator.pop(context)
-                              })
-                          .catchError((error) => {
-                                //error
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("An error occurred"),
-                                    behavior: SnackBarBehavior.floating,
-                                    duration: Duration(seconds: 1),
-                                  ),
-                                )
-                              });
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Please fill all fields'),
-                          behavior: SnackBarBehavior.floating,
-                          duration: Duration(seconds: 1),
-                        ),
-                      );
-                    }
-                  },
-                  child: const Text('Save'),
-                ),
-              ],
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

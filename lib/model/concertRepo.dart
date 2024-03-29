@@ -11,7 +11,7 @@ final storage = FirebaseStorage.instance;
 
 class ConcertRepo {
   static Future<void> addConcert(String name, DateTime date, String location,
-      File ticket, String imageUrl) async {
+      File ticket, String? imageUrl) async {
     Concert concert = Concert(
         name, date, location, ticket.path, imageUrl, auth.currentUser?.uid);
     await firestore.collection('concerts').add(concert.toJson());
