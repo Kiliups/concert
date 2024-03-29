@@ -5,6 +5,8 @@ import 'package:concert_tickets/model/functions.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
+import '../components/imageAppBar.dart';
+
 class Add extends StatefulWidget {
   const Add({super.key});
 
@@ -33,57 +35,24 @@ class _AddState extends State<Add> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            expandedHeight: 300,
-            flexibleSpace: FlexibleSpaceBar(
-              titlePadding: const EdgeInsets.all(8),
-              centerTitle: true,
-              title: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.add_card,
-                    size: 56,
-                  ),
-                  Container(
-                      margin: const EdgeInsets.only(top: 8),
-                      child: const Text(
-                        'Add a Concert Ticket',
-                        style: TextStyle(fontSize: 24),
-                      )),
-                ],
-              ),
-              background: _imageUrl != null
-                  ? Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        Image.network(
-                          _imageUrl!,
-                          fit: BoxFit.cover,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-                              colors: [
-                                Theme.of(context)
-                                    .colorScheme
-                                    .background
-                                    .withOpacity(1),
-                                Theme.of(context)
-                                    .colorScheme
-                                    .background
-                                    .withOpacity(0.1)
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  : const SizedBox(),
+          ImageAppBar(
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(
+                  Icons.add_card,
+                  size: 56,
+                ),
+                Container(
+                    margin: const EdgeInsets.only(top: 8),
+                    child: const Text(
+                      'Add a Concert Ticket',
+                      style: TextStyle(fontSize: 24),
+                    )),
+              ],
             ),
+            imageUrl: _imageUrl,
           ),
           SliverFillRemaining(
             child: Container(
