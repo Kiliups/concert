@@ -47,13 +47,8 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(widget.title),
         ),
         body: Container(
-          padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
-          child: ListView(
-            children: const [
-              TicketList(),
-            ],
-          ),
-        ),
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+            child: ConcertComponent()),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             //navigate to add page

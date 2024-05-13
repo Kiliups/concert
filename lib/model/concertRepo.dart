@@ -17,10 +17,20 @@ class ConcertRepo {
     await firestore.collection('concerts').add(concert.toJson());
   }
 
-  static getConcerts() {
+  static getFutureConcerts() {
     return firestore
         .collection('concerts')
         .where('userId', isEqualTo: auth.currentUser?.uid)
+        .where('date', isGreaterThanOrEqualTo: DateTime.now())
+        .orderBy('date', descending: false)
+        .snapshots();
+  }
+
+  static getPastConcerts() {
+    return firestore
+        .collection('concerts')
+        .where('userId', isEqualTo: auth.currentUser?.uid)
+        .where('date', isLessThan: DateTime.now())
         .orderBy('date', descending: false)
         .snapshots();
   }

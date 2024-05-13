@@ -93,7 +93,8 @@ class _AddState extends State<Add> {
                               if (date != null) {
                                 final TimeOfDay? time = await showTimePicker(
                                     context: context,
-                                    initialTime: TimeOfDay.now());
+                                    initialTime:
+                                        TimeOfDay(hour: 19, minute: 0));
                                 if (time != null) {
                                   final DateTime dateTime = DateTime(
                                       date.year,

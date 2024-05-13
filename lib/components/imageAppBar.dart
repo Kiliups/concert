@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class ImageAppBar extends StatelessWidget {
   Widget title;
   String? imageUrl;
+
   ImageAppBar({super.key, required this.title, this.imageUrl});
 
   @override
@@ -15,32 +16,32 @@ class ImageAppBar extends StatelessWidget {
         title: title,
         background: imageUrl != null
             ? Stack(
-          fit: StackFit.expand,
-          children: [
-            Image.network(
-              imageUrl!,
-              fit: BoxFit.cover,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: [
-                    Theme.of(context)
-                        .colorScheme
-                        .background
-                        .withOpacity(1),
-                    Theme.of(context)
-                        .colorScheme
-                        .background
-                        .withOpacity(0.1)
-                  ],
-                ),
-              ),
-            ),
-          ],
-        )
+                fit: StackFit.expand,
+                children: [
+                  Image.network(
+                    imageUrl!,
+                    fit: BoxFit.cover,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [
+                          Theme.of(context)
+                              .colorScheme
+                              .background
+                              .withOpacity(1),
+                          Theme.of(context)
+                              .colorScheme
+                              .background
+                              .withOpacity(0.1)
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              )
             : const SizedBox(),
       ),
     );
