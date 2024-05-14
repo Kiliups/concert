@@ -43,6 +43,9 @@ dependencies:
   file_picker:
   open_file:
   flutter_launcher_icons: 0.13.1
+  oauth2_client:
+  http:
+  flutter_dotenv:
 
 flutter_launcher_icons:
   android: true
@@ -72,9 +75,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
+    - lib/.env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

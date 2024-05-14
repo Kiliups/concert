@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:concert_tickets/components/dropDownSearch.dart';
 import 'package:concert_tickets/model/concertRepo.dart';
 import 'package:concert_tickets/model/functions.dart';
 import 'package:file_picker/file_picker.dart';
@@ -20,14 +21,17 @@ class _AddState extends State<Add> {
   String _location = '';
   File? _ticket;
   String? _imageUrl;
-  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
-  final TextEditingController _imageUrlController = TextEditingController();
 
   @override
   void dispose() {
-    _nameController.dispose();
     super.dispose();
+  }
+
+  void safeArtistCallback(Map<String, dynamic> artist) {
+    if (artist['image'] != null) _imageUrl = artist['image'];
+    _name = artist['name'];
+    setState(() {});
   }
 
   @override
@@ -63,23 +67,7 @@ class _AddState extends State<Add> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 8),
-                        child: TextField(
-                          controller: _nameController,
-                          onChanged: (String value) {
-                            setState(() {
-                              _name = value;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            hintText: 'Concert Name',
-                          ),
-                        ),
-                      ),
+                      DropDownSearch(safeArtistCallback: safeArtistCallback),
                       Container(
                         margin: const EdgeInsets.only(top: 8),
                         child: GestureDetector(
@@ -138,23 +126,6 @@ class _AddState extends State<Add> {
                               borderRadius: BorderRadius.circular(4),
                             ),
                             hintText: 'Location',
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 8),
-                        child: TextField(
-                          controller: _imageUrlController,
-                          onChanged: (String value) {
-                            setState(() {
-                              _imageUrl = value;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            hintText: 'Image URL',
                           ),
                         ),
                       ),

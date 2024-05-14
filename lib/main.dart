@@ -1,7 +1,9 @@
+import 'package:concert_tickets/model/spotify.dart';
 import 'package:concert_tickets/pages/add.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'components/ticketList.dart';
 import 'firebase_options.dart';
@@ -11,6 +13,8 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   var auth = FirebaseAuth.instance;
   await auth.signInAnonymously();
+  await dotenv.load(fileName: 'lib/.env');
+  await SpotifyRepo.initializeService();
   runApp(const MyApp());
 }
 
